@@ -1,0 +1,118 @@
+:root {
+  --green: #4CAF50;
+  --orange: #FF9800;
+  --red: #F44336;
+  --bg: #f4f6f8;
+  --white: #ffffff;
+  --text: #212121;
+  --radius: 1rem;
+  --shadow: 0 4px 10px rgba(0,0,0,0.05);
+  --shadow-hover: 0 6px 16px rgba(0,0,0,0.08);
+  --font: 'Segoe UI', sans-serif;
+  --accent: #4CAF50;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background-color: var(--white);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 1.3rem;
+  margin: 0 auto;
+}
+
+.btn {
+  background-color: var(--accent);
+  border: none;
+  color: white;
+  font-size: 1rem;
+  border-radius: 0.6rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #388e3c;
+}
+
+.btn.secondary {
+  background-color: #e0e0e0;
+  color: #212121;
+}
+
+main {
+  padding: 1rem 0.5rem;
+}
+
+/* BANNIÈRES DE CATÉGORIES */
+.category-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white);
+  border-radius: var(--radius);
+  margin: 1rem 0.75rem;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.category-icon {
+  font-size: 1.8rem;
+  margin-right: 0.75rem;
+}
+
+.progress {
+  font-weight: bold;
+}
+
+/* CASES À COCHER */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 1rem;
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.checkbox-item:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.01);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--green);
+  transition: transform 0.2s ease;
+}
+
+.checkbox-item input[type="checkbox"]:checked {
+  transform: scale(1.2);
+}

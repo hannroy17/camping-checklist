@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catégorie</title>
+  <link rel="stylesheet" href="../style/designSystem.css" />
+</head>
+<body>
+  <header>
+  <button class="btn secondary" onclick="window.location.href='../index.html'">←</button>
+  <h1 id="category-name">Catégorie</h1>
+  <span></span>
+</header>
+
+
+  <main id="items-container"></main>
+
+  <script src="../scripts/categories.js"></script>
+  <script src="../scripts/categoryPage.js"></script>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/scripts/serviceWorker.js");
+  }
+</script>
+</body>
+</html>

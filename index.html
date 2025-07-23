@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Camping Checklist</title>
+  <link rel="stylesheet" href="style/designSystem.css"/>
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <header>
+    <h1>Camping Checklist</h1>
+  </header>
+  <main id="categories-container">
+    <!-- Les bannières des catégories seront injectées ici dynamiquement -->
+  </main>
+  <script src="scripts/categories.js"></script>
+  <script src="scripts/main.js"></script>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/scripts/serviceWorker.js");
+  }
+</script>
+</body>
+</html>
