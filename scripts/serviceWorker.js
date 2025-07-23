@@ -1,12 +1,16 @@
 const cacheName = "camping-checklist-v1";
 const filesToCache = [
-  "/",
-  "/index.html",
-  "/style/designSystem.css",
-  "/scripts/main.js",
-  "/scripts/categories.js",
-  "/scripts/categoryPage.js",
-  "/pages/category.html"
+  "/camping-checklist/",
+  "/camping-checklist/index.html",
+  "/camping-checklist/style/designSystem.css",
+  "/camping-checklist/scripts/main.js",
+  "/camping-checklist/scripts/categories.js",
+  "/camping-checklist/scripts/categoryPage.js",
+  "/camping-checklist/scripts/serviceWorker.js",
+  "/camping-checklist/pages/category.html",
+  "/camping-checklist/icon-192.png",
+  "/camping-checklist/icon-512.png",
+  "/camping-checklist/manifest.json"
 ];
 
 // Installation
