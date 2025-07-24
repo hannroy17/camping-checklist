@@ -2,9 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("categories-container");
 
   categories.forEach(cat => {
-    const total = cat.items.length;
-    const checked = JSON.parse(localStorage.getItem(cat.id))?.length || 0;
-    const percentage = Math.round((checked / total) * 100);
+    const baseItems = cat.items || [];
+    const customItems = JSON.parse(localStorage.getItem(`${cat.id}-custom`)) || [];
+    const allItems = [...baseItems, ...customItems];
+
+    const total = allItems.length;
+    const checkedItems = (JSON.parse(localStorage.getItem(cat.id)) || []).filter(i => allItems.includes(i));
+    const checked = checkedItems.length;
+
+    const percentage = total > 0 ? Math.round((checked / total) * 100) : 0;
 
     const color = percentage === 100
       ? 'var(--green)'

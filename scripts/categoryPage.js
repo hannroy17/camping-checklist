@@ -16,6 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let items = [...category.items, ...savedCustomItems];
 
+  const updateProgress = () => {
+    const total = items.length;
+    const checked = (JSON.parse(localStorage.getItem(catId)) || []).filter(i => items.includes(i)).length;
+    const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+    const banner = document.querySelector(".category-banner .progress");
+    if (banner) banner.textContent = `${percent}%`;
+  };
+
   const renderItems = () => {
     container.innerHTML = '';
 
@@ -23,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const wrapper = document.createElement("div");
       wrapper.className = "item-wrapper";
 
-      // Bouton suppression
       const del = document.createElement("button");
       del.className = "delete-btn";
       del.innerHTML = '<i class="ph ph-trash"></i>';
@@ -35,11 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem(`${catId}-custom`, JSON.stringify(custom));
           localStorage.setItem(catId, JSON.stringify(savedChecks.filter(i => i !== item)));
           renderItems();
-          initSortable(); // 🧩 re-init après suppression
+          initSortable();
+          updateProgress();
         }
       });
 
-      // Contenu : checkbox + label
       const content = document.createElement("div");
       content.className = "item-content";
 
@@ -64,25 +71,23 @@ document.addEventListener("DOMContentLoaded", () => {
           checkIcon.style.display = "none";
         }
         localStorage.setItem(catId, JSON.stringify(updated));
+        updateProgress();
       });
 
       checkboxWrapper.appendChild(checkbox);
       checkboxWrapper.appendChild(checkIcon);
 
-      // === Grip icon draggable (⠿)
-const grip = document.createElement("i");
-grip.className = "ph ph-dots-six-vertical grip-icon";
-content.appendChild(grip); // 👈 ajout avant checkbox + label si tu veux l'afficher à gauche
-      
       const label = document.createElement("span");
       label.textContent = item;
-      label.className = "item-label";  // Ajoute une classe CSS
+      label.className = "item-label";
+
+      const grip = document.createElement("i");
+      grip.className = "ph ph-dots-six-vertical grip-icon";
 
       content.appendChild(checkboxWrapper);
       content.appendChild(label);
-      content.appendChild(grip);       
+      content.appendChild(grip);
 
-      // Swipe mobile
       let startX = 0;
       wrapper.addEventListener("touchstart", e => {
         startX = e.touches[0].clientX;
@@ -100,7 +105,6 @@ content.appendChild(grip); // 👈 ajout avant checkbox + label si tu veux l'aff
       container.appendChild(wrapper);
     });
 
-    // Ligne ajouter un élément
     const addRow = document.createElement("div");
     addRow.className = "add-item-row";
     addRow.textContent = "➕ Ajouter un élément";
@@ -124,7 +128,8 @@ content.appendChild(grip); // 👈 ajout avant checkbox + label si tu veux l'aff
           const custom = items.filter(i => !category.items.includes(i));
           localStorage.setItem(`${catId}-custom`, JSON.stringify(custom));
           renderItems();
-          initSortable(); // 🧩 re-init après ajout
+          initSortable();
+          updateProgress();
         }
       };
 
@@ -140,7 +145,6 @@ content.appendChild(grip); // 👈 ajout avant checkbox + label si tu veux l'aff
 
     container.appendChild(addRow);
 
-    // Lien tout décocher
     const clearLink = document.createElement("a");
     clearLink.textContent = "Tout décocher";
     clearLink.href = "#";
@@ -152,41 +156,42 @@ content.appendChild(grip); // 👈 ajout avant checkbox + label si tu veux l'aff
       if (confirmClear) {
         localStorage.setItem(catId, JSON.stringify([]));
         renderItems();
-        initSortable(); // 🧩 re-init après reset
+        initSortable();
+        updateProgress();
       }
     });
 
     container.appendChild(clearLink);
+    updateProgress(); // mise à jour finale
   };
 
-  // === Fonction pour activer SortableJS ===
-  
   const initSortable = () => {
-  Sortable.create(container, {
-    animation: 150,
-    handle: ".item-content",
-    ghostClass: "drag-ghost",
-    filter: ".delete-btn",
-    preventOnFilter: false,
-    delay: 150,              // ⏱️ délai avant drag (utile sur mobile)
-    delayOnTouchOnly: true,  // ✅ seulement sur mobile
-    touchStartThreshold: 5,  // 👇 seuil de distance pour initier le drag
-    onEnd: () => {
-      const newOrder = [...container.querySelectorAll(".item-wrapper")]
-        .map(el => el.querySelector("span").textContent);
+    Sortable.create(container, {
+      animation: 150,
+      handle: ".item-content",
+      ghostClass: "drag-ghost",
+      filter: ".delete-btn",
+      preventOnFilter: false,
+      delay: 150,
+      delayOnTouchOnly: true,
+      touchStartThreshold: 5,
+      onEnd: () => {
+        const newOrder = [...container.querySelectorAll(".item-wrapper")]
+          .map(el => el.querySelector("span").textContent);
 
-      items = newOrder;
-      const custom = items.filter(i => !category.items.includes(i));
-      localStorage.setItem(`${catId}-custom`, JSON.stringify(custom));
+        items = newOrder;
+        const custom = items.filter(i => !category.items.includes(i));
+        localStorage.setItem(`${catId}-custom`, JSON.stringify(custom));
 
-      const updatedChecks = JSON.parse(localStorage.getItem(catId)) || [];
-      const filteredChecks = updatedChecks.filter(i => newOrder.includes(i));
-      localStorage.setItem(catId, JSON.stringify(filteredChecks));
-    }
-  });
-};
+        const updatedChecks = JSON.parse(localStorage.getItem(catId)) || [];
+        const filteredChecks = updatedChecks.filter(i => newOrder.includes(i));
+        localStorage.setItem(catId, JSON.stringify(filteredChecks));
 
-  // === Lancement initial ===
+        updateProgress(); // ✅ recalcul après tri
+      }
+    });
+  };
+
   renderItems();
   initSortable();
 });
