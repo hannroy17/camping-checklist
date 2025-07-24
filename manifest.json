@@ -4,7 +4,7 @@
   "start_url": "/camping-checklist/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
+  "theme_color": "#4E7C59",
   "icons": [
     {
       "src": "/camping-checklist/icon-192.png",
