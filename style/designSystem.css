@@ -1,15 +1,20 @@
 :root {
-  --green: #4CAF50;
-  --orange: #FF9800;
-  --red: #F44336;
-  --bg: #f4f6f8;
-  --white: #ffffff;
+  --green: #6B8E23;          /* Olive foncé */
+  --orange: #D9903D;         /* Orange terre */
+  --red: #A84232;            /* Rouge brique */
+  --red-secondary: #C62828;
+  --accent: #4E7C59;         /* Vert forêt */
+  --hover-accent: #3a6147;
+  --line-through-color: #212121;
+  --bg: #f7f5ef;
+  --white: #fffdf8;
   --text: #212121;
+  --border: #ccc;
+  --gray-light: #e0e0e0;
   --radius: 1rem;
   --shadow: 0 4px 10px rgba(0,0,0,0.05);
   --shadow-hover: 0 6px 16px rgba(0,0,0,0.08);
   --font: 'Segoe UI', sans-serif;
-  --accent: #4CAF50;
 }
 
 body {
@@ -45,19 +50,19 @@ header h1 {
 }
 
 .btn:hover {
-  background-color: #388e3c;
+  background-color: var(--hover-accent);
 }
 
 .btn.secondary {
-  background-color: #e0e0e0;
-  color: #212121;
+  background-color: var(--gray-light);
+  color: var(--text);
 }
 
 main {
   padding: 1rem 0.5rem;
 }
 
-/* BANNIÈRES DE CATÉGORIES */
+/* === BANNIÈRES DE CATÉGORIES === */
 .category-banner {
   display: flex;
   justify-content: space-between;
@@ -86,33 +91,211 @@ main {
   font-weight: bold;
 }
 
-/* CASES À COCHER */
-.checkbox-item {
+/* === ÉLÉMENTS À COCHER (Structure) === */
+.item-wrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--white);
+  border-radius: var(--radius);
+  margin: 0.5rem 1rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  padding: 0 1rem;
+}
+
+.item-content {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   font-size: 1.1rem;
-  padding: 0.75rem 1rem;
-  margin: 0.5rem 1rem;
+  flex: 1;
+  height: 100%;
+  padding-right: 3rem;
+  cursor: grab;    
+}
+
+.item-wrapper:active .item-content {
+  cursor: grabbing;
+}
+
+/* === CHECKBOX PERSONNALISÉE === */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Case elle-même */
+.custom-checkbox input[type="checkbox"] {
+  appearance: none;
   background-color: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow);
+  position: relative;
+  display: block;
+  z-index: 1;
 }
 
-.checkbox-item:hover {
-  background-color: #f1f1f1;
-  transform: scale(1.01);
+/* Style quand cochée */
+.custom-checkbox input[type="checkbox"]:checked {
+  background-color: var(--green);
+  border-color: var(--green);
 }
 
-.checkbox-item input[type="checkbox"] {
-  width: 1.2rem;
-  height: 1.2rem;
-  accent-color: var(--green);
+/* Icône centrée dans la case cochée */
+.custom-checkbox .check-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* ✅ centrage parfait */
+  font-size: 1.2rem;
+  color: var(--white);
+  pointer-events: none;
+  display: none;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* Montre l’icône uniquement quand coché */
+.custom-checkbox input[type="checkbox"]:checked + .check-icon {
+  display: block;
+}
+
+/* Texte barré si coché */
+.item-content:has(input[type="checkbox"]:checked) span {
+  text-decoration: line-through;
+  color: var(--line-through-color);
+}
+
+/* === SUPPRESSION PAR SWIPE === */
+.delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: var(--red-secondary);
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  cursor: pointer;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  text-shadow: 0 0 2px white;
+}
+
+.delete-btn .ph {
+  font-size: 1.4rem;
+  color: white;
+}
+
+.item-wrapper.swiped {
+  transform: translateX(-12px);
+}
+
+.item-wrapper.swiped .delete-btn {
+  opacity: 1;
+}
+
+.trash-icon {
+  color: white;
   transition: transform 0.2s ease;
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.4));
 }
 
-.checkbox-item input[type="checkbox"]:checked {
+.delete-btn:hover .trash-icon {
   transform: scale(1.2);
+}
+
+/* === AJOUT D'ÉLÉMENT === */
+.add-item-row {
+  padding: 1rem;
+  margin: 1rem 1rem 0.5rem;
+  border-radius: var(--radius);
+  background-color: var(--white);
+  text-align: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+.add-item-row:hover {
+  background-color: var(--bg);
+}
+
+.add-item-input {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 1rem;
+}
+
+.add-item-input input {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* === LIEN "TOUT DÉCOCHER" === */
+.clear-link {
+  display: block;
+  text-align: center;
+  color: var(--accent);
+  margin: 2rem auto 1rem;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.clear-link:hover {
+  color: var(--hover-accent);
+}
+
+/* === ICONES PHOSPHOR === */
+.ph {
+  font-family: 'Phosphor', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+}
+
+/* Drag Feature*/
+
+.drag-ghost {
+  opacity: 0.5;
+  background-color: var(--gray-light);
+}
+
+.grip-icon {
+  font-size: 1.2rem;
+  color: var(--gray-light);
+  cursor: grab;
+  margin-left: auto; /* 👈 pousse le grip à l’extrême droite */
+  z-index: 2;         /* au-dessus de delete si chevauchement */
+}
+
+.item-label {
+  flex: 1; /* 👈 pousse le grip à droite */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

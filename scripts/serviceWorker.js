@@ -1,4 +1,5 @@
 const cacheName = "camping-checklist-v1";
+
 const filesToCache = [
   "/camping-checklist/",
   "/camping-checklist/index.html",
@@ -13,17 +14,23 @@ const filesToCache = [
   "/camping-checklist/manifest.json"
 ];
 
-// Installation
+// Installation : mise en cache initiale
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(cacheName).then(cache => {
-      return cache.addAll(filesToCache);
+      return Promise.allSettled(
+        filesToCache.map(file =>
+          cache.add(file).catch(err => {
+            console.warn("[ServiceWorker] Non mis en cache :", file, err.message);
+          })
+        )
+      );
     })
   );
   self.skipWaiting();
 });
 
-// Activation
+// Activation : nettoyage des anciennes versions de cache
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -35,7 +42,7 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// Interception des requêtes
+// Interception des requêtes : stratégie "cache-first"
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => {

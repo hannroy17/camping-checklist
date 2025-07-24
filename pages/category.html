@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Catégorie</title>
   <link rel="stylesheet" href="../style/designSystem.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
 </head>
 <body>
   <header>
@@ -14,14 +15,21 @@
 </header>
 
 
-  <main id="items-container"></main>
-
+<main>
+  <div id="items-container"></div>
+</main>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <script src="../scripts/categories.js"></script>
   <script src="../scripts/categoryPage.js"></script>
 
 <script>
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/camping-checklist/scripts/serviceWorker.js");
+    const base =
+      location.hostname === "localhost" || location.hostname === "127.0.0.1"
+        ? "../scripts/serviceWorker.js"
+        : "/camping-checklist/scripts/serviceWorker.js";
+    navigator.serviceWorker.register(base);
   }
 </script>
 </body>
