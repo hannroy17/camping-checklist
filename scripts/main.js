@@ -31,4 +31,45 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     container.appendChild(banner);
   });
+ /* // === Gestion de la destination Google Maps ===
+const inputWrapper = document.querySelector(".destination-input");
+const input = document.getElementById("destination-input");
+const saveBtn = document.getElementById("save-destination");
+
+const displayBlock = document.getElementById("destination-display");
+const destName = document.getElementById("destination-name");
+const openMaps = document.getElementById("open-maps");
+const editBtn = document.getElementById("edit-destination");
+
+const DEST_KEY = "next-destination";
+
+// ➕ Chargement de la destination si déjà enregistrée
+const savedDestination = localStorage.getItem(DEST_KEY);
+if (savedDestination) {
+  inputWrapper.classList.add("hidden");
+  displayBlock.classList.remove("hidden");
+  destName.textContent = savedDestination;
+  openMaps.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(savedDestination)}`;
+}
+
+// ✅ Enregistrement de la destination
+saveBtn.addEventListener("click", () => {
+  const destination = input.value.trim();
+  if (!destination) return;
+
+  localStorage.setItem(DEST_KEY, destination);
+  inputWrapper.classList.add("hidden");
+  displayBlock.classList.remove("hidden");
+
+  destName.textContent = destination;
+  openMaps.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+});
+
+// ✏️ Modifier la destination
+editBtn.addEventListener("click", () => {
+  input.value = localStorage.getItem(DEST_KEY) || "";
+  inputWrapper.classList.remove("hidden");
+  displayBlock.classList.add("hidden");
+});
+*/
 });

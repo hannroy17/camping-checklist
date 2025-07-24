@@ -1,3 +1,7 @@
+* {
+  -webkit-tap-highlight-color: transparent; /* désactive le surlignage bleu sur iOS/Android */
+}
+
 :root {
   --green: #6B8E23;          /* Olive foncé */
   --orange: #D9903D;         /* Orange terre */
@@ -62,6 +66,12 @@ main {
   padding: 1rem 0.5rem;
 }
 
+a, button, input {
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
 /* === BANNIÈRES DE CATÉGORIES === */
 .category-banner {
   display: flex;
@@ -89,6 +99,51 @@ main {
 
 .progress {
   font-weight: bold;
+}
+
+/* === CATEGORY HEADER === */
+.category-header {
+  position: relative;
+  padding: 1rem;
+  padding-bottom: 1.5rem; /* espace pour la barre */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--light) 0%, #f9f9f9 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid #ccc;
+}
+
+.back-icon {
+  position: absolute;
+  left: 1rem;
+  font-size: 1.5rem;
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.progress-value {
+  position: absolute;
+  right: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.category-header h1 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+#category-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 0%; /* mis à jour dynamiquement */
+  background: var(--red);
+  transition: width 0.3s ease, background 0.3s ease;
+  border-radius: 2px;
 }
 
 /* === ÉLÉMENTS À COCHER (Structure) === */
@@ -298,4 +353,73 @@ main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* DESTINATION */
+.destination-section {
+  padding: 2rem 1rem;
+  background-color: var(--bg-light, #f8f9fa);
+  border-top: 1px solid #ddd;
+  border-radius: 1rem 1rem 0 0;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+  margin-top: 2rem;
+}
+
+.destination-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.destination-input {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.destination-input input {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+}
+
+.destination-input button {
+  padding: 0.6rem 1rem;
+  background-color: var(--green);
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.destination-display {
+  margin-top: 1rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.destination-display p {
+  margin: 0 0 0.5rem;
+}
+
+.destination-display .btn {
+  display: inline-block;
+  margin-right: 1rem;
+  text-decoration: none;
+  color: white;
+  background-color: var(--blue, #007BFF);
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+}
+
+.destination-display .edit-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted, #666);
+  cursor: pointer;
+  font-size: 0.9rem;
 }

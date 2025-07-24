@@ -11,18 +11,37 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("category-name").textContent = category.name;
 
   const container = document.getElementById("items-container");
-  const savedChecks = JSON.parse(localStorage.getItem(catId)) || [];
-  const savedCustomItems = JSON.parse(localStorage.getItem(`${catId}-custom`)) || [];
+  let savedChecks = JSON.parse(localStorage.getItem(catId)) || [];
+  let savedCustomItems = JSON.parse(localStorage.getItem(`${catId}-custom`)) || [];
 
   let items = [...category.items, ...savedCustomItems];
 
   const updateProgress = () => {
-    const total = items.length;
-    const checked = (JSON.parse(localStorage.getItem(catId)) || []).filter(i => items.includes(i)).length;
-    const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
-    const banner = document.querySelector(".category-banner .progress");
-    if (banner) banner.textContent = `${percent}%`;
-  };
+  const checked = (JSON.parse(localStorage.getItem(catId)) || []).filter(i => items.includes(i)).length;
+  const total = items.length;
+  const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+
+  const progressText = document.getElementById("category-progress");
+  const progressBar = document.getElementById("category-progress-bar");
+
+  // Choix couleur selon avancement
+  const color =
+    percent === 100 ? 'var(--green)' :
+    percent >= 50  ? 'var(--orange)' :
+                     'var(--red)';
+
+  // Texte numérique (%)
+  if (progressText) {
+    progressText.textContent = `${percent}%`;
+    progressText.style.color = color;
+  }
+
+  // Barre de progression visuelle
+  if (progressBar) {
+    progressBar.style.width = `${percent}%`;
+    progressBar.style.background = color;
+  }
+};
 
   const renderItems = () => {
     container.innerHTML = '';
@@ -35,12 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
       del.className = "delete-btn";
       del.innerHTML = '<i class="ph ph-trash"></i>';
       del.addEventListener("click", () => {
-        const confirmDelete = confirm(`Supprimer l'élément : "${item}" ?`);
-        if (confirmDelete) {
+        if (confirm(`Supprimer l'élément : "${item}" ?`)) {
           items = items.filter(i => i !== item);
           const custom = items.filter(i => !category.items.includes(i));
+          savedChecks = savedChecks.filter(i => i !== item);
+
           localStorage.setItem(`${catId}-custom`, JSON.stringify(custom));
-          localStorage.setItem(catId, JSON.stringify(savedChecks.filter(i => i !== item)));
+          localStorage.setItem(catId, JSON.stringify(savedChecks));
+
           renderItems();
           initSortable();
           updateProgress();
@@ -88,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       content.appendChild(label);
       content.appendChild(grip);
 
+      // Swipe mobile
       let startX = 0;
       wrapper.addEventListener("touchstart", e => {
         startX = e.touches[0].clientX;
@@ -105,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(wrapper);
     });
 
+    // Ajouter un élément
     const addRow = document.createElement("div");
     addRow.className = "add-item-row";
     addRow.textContent = "➕ Ajouter un élément";
@@ -127,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
           items.push(newItem);
           const custom = items.filter(i => !category.items.includes(i));
           localStorage.setItem(`${catId}-custom`, JSON.stringify(custom));
+
           renderItems();
           initSortable();
           updateProgress();
@@ -134,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       confirm.addEventListener("click", handleNewItem);
-      input.addEventListener("keydown", (e) => {
+      input.addEventListener("keydown", e => {
         if (e.key === "Enter") handleNewItem();
       });
 
@@ -145,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     container.appendChild(addRow);
 
+    // Tout décocher
     const clearLink = document.createElement("a");
     clearLink.textContent = "Tout décocher";
     clearLink.href = "#";
@@ -152,8 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     clearLink.addEventListener("click", (e) => {
       e.preventDefault();
-      const confirmClear = confirm("Souhaitez-vous vraiment tout décocher ?");
-      if (confirmClear) {
+      if (confirm("Souhaitez-vous vraiment tout décocher ?")) {
         localStorage.setItem(catId, JSON.stringify([]));
         renderItems();
         initSortable();
@@ -162,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     container.appendChild(clearLink);
-    updateProgress(); // mise à jour finale
+    updateProgress();
   };
 
   const initSortable = () => {
@@ -187,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const filteredChecks = updatedChecks.filter(i => newOrder.includes(i));
         localStorage.setItem(catId, JSON.stringify(filteredChecks));
 
-        updateProgress(); // ✅ recalcul après tri
+        updateProgress();
       }
     });
   };

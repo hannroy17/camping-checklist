@@ -1,5 +1,22 @@
 const categories = [
   {
+  id: "before-trip",
+  name: "Avant de partir",
+  icon: "📝",
+  items: [
+    "Fermer les fenêtres",
+    "Vérifier les plaques de cuisson",
+    "Vider la poubelle",
+    "Éteindre les lumières",
+    "Débrancher les appareils inutiles",
+    "Fermer à clé",
+    "Prévenir le voisin",
+    "Vérifier les documents (ID, permis, assurance)",
+    "Télécharger la carte du camping",
+    "Charger les batteries externes"
+  ]
+},
+  {
     id: "dormir",
     name: "Dormir",
     icon: "🛏️",

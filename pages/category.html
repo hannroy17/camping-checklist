@@ -8,10 +8,16 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
 </head>
 <body>
-  <header>
-  <button class="btn secondary" onclick="window.location.href='../index.html'">←</button>
-  <h1 id="category-name">Catégorie</h1>
-  <span></span>
+  <header class="category-header">
+  <a href="../index.html" class="back-icon">
+    <i class="ph ph-arrow-left"></i>
+  </a>
+
+  <h1 id="category-name">Nom catégorie</h1>
+
+  <div id="category-progress" class="progress-value">0%</div>
+
+  <div id="category-progress-bar"></div>
 </header>
 
 
